@@ -1,0 +1,36 @@
+version: "2"
+
+run:
+  timeout: 5m
+  go: "1.23"
+
+formatters:
+  exclusions:
+    paths:
+      - .+_test.go
+      - .git/
+  enable:
+    - gofmt
+    - goimports
+    - golines
+    - gci
+
+linters:
+  exclusions:
+    rules:
+      - path: (.+)_test.go
+        linters:
+          - errcheck
+          - gosec
+          - dupl
+
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - ineffassign
+    - unused
+    - dupl
+    - errorlint
+    - iface
+    - gosec
