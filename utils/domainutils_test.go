@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -148,41 +149,26 @@ func TestGetAllTLDs(t *testing.T) {
 	}
 
 	for _, domain := range domains {
-
-		t.Run(domain["domain"].(string), func(t *testing.T) {
-			allTLDs := GetAllTLDs(domain["domain"].(string), false, false)
+		t.Run(fmt.Sprintf("%s_%v_%v", domain["domain"], domain["only_country"], domain["only_popular"]), func(t *testing.T) {
+			onlyCountry := domain["only_country"].(bool)
+			onlyPopular := domain["only_popular"].(bool)
+			allTLDs := GetAllTLDs(domain["domain"].(string), onlyCountry, onlyPopular)
 
 			for _, tld := range allTLDs {
-				if !domain["only_popular"].(bool) {
-					// check if there are tlds from country in list
+				if onlyPopular && !onlyCountry {
+					// Should NOT have country TLDs (checking specific ones as examples)
 					if strings.HasSuffix(tld, ".us") {
-						t.Errorf("Expected %s to not have a country TLD", tld)
+						t.Errorf("Expected %s to not be present when only_popular=true", tld)
 					}
 				}
 
-				if !domain["only_country"].(bool) {
-					// check if there are tlds from popular in list
+				if onlyCountry && !onlyPopular {
+					// Should NOT have popular TLDs (checking specific ones as examples)
 					if strings.HasSuffix(tld, ".com") {
-						t.Errorf("Expected %s to not have a popular TLD", tld)
+						t.Errorf("Expected %s to not be present when only_country=true", tld)
 					}
 				}
-
-				if domain["only_popular"].(bool) && domain["only_country"].(bool) {
-					// check if there are tlds from popular and country in list
-					if strings.HasSuffix(tld, ".us") || strings.HasSuffix(tld, ".com") {
-						t.Errorf("Expected %s to not have a popular or country TLD", tld)
-					}
-				}
-
-				if !domain["only_popular"].(bool) && !domain["only_country"].(bool) {
-					// check if there are tlds from popular and country in list
-					if strings.HasSuffix(tld, ".us") || strings.HasSuffix(tld, ".com") {
-						t.Errorf("Expected %s to not have a popular or country TLD", tld)
-					}
-				}
-
 			}
 		})
-
 	}
 }
