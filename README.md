@@ -39,8 +39,28 @@ To build the project:
 make build
 ```
 
+### Docker
+
+You can also build and run the server using Docker.
+
+**Build the image:**
+```bash
+docker build -t whoisthere .
+```
+
+**Run the container:**
+```bash
+docker run -p 8080:8080 whoisthere
+```
+
+You can also use the pre-built image from GitHub Container Registry:
+
+```bash
+docker run -p 8080:8080 ghcr.io/jaysongiroux/whoisthere:latest
+```
+
 ### Run
-To run the server:
+To run the server locally (without Docker):
 
 ```bash
 make run
