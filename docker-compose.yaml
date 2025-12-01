@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  whoisthere:
+    image: ghcr.io/jaysongiroux/whoisthere:latest
+    container_name: whoisthere
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=:8080

@@ -59,6 +59,24 @@ You can also use the pre-built image from GitHub Container Registry:
 docker run -p 8080:8080 ghcr.io/jaysongiroux/whoisthere:latest
 ```
 
+**Docker Compose:**
+
+You can also run the server using Docker Compose. Create a `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+
+services:
+  whoisthere:
+    image: ghcr.io/jaysongiroux/whoisthere:latest
+    container_name: whoisthere
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=:8080
+```
+
 ### Run
 To run the server locally (without Docker):
 
